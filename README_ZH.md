@@ -13,16 +13,33 @@ Claude Code WebUI 让用户可以通过浏览器与 Claude Code 进行对话。
 
 ## 开始使用
 
-在开始安装本项目之前，请先确保安装了 Bun 环境与 Claude Code。
+在开始安装本项目之前，请先确保安装了 Bun 环境与 Claude Code, 如果已有，请忽略。
 
-安装 Bun， 如果已有，请忽略。
-```
+安装 Bun
+```bash
 curl -fsSL https://bun.sh/install | bash
 ```
 
-安装 Claude Code， 如果已有，请忽略。
-```
+安装 Claude Code
+```bash
 npm install -g @anthropic-ai/claude-code
+```
+
+运行 Claude Code WebUI
+
+```
+bunx @devagentforge/claude-code-webui@latest
+```
+
+从源码运行
+
+```bash
+git clone https://github.com/DevAgentForge/claude-code-webui.git
+cd claude-code-webui 
+
+bun i 
+bun run build
+bun run start
 ```
 
 **注意**
