@@ -1,170 +1,224 @@
 # Claude Code WebUI
 
-网页版的 Claude Code，允许您部署后在任意设备通过网页进行 AI 编程，兼容本地 Claude Code 配置。  
+**Claude Code —— 现在就在你的浏览器中。任何地方都可以使用。**
 
-![ScreenShot](./assets//ScreenShot_1.png)
+一个**基于 Web 的 Claude Code**，可以在**桌面、手机和 iPad**上运行，
+同时**与你本地的 Claude Code 共享完全相同的配置**。
 
-## 项目简介
+> 无需云端重写。
+> 无供应商锁定。
+> 就是 Claude Code —— 随时随地。
 
-Claude Code WebUI 让用户可以通过浏览器与 Claude Code 进行对话。  
-该项目使用 React 构建前端，Bun 作为后端运行时，实现了完整的会话管理、实时消息流、权限控制等功能。
+![截图](./assets/ScreenShot_1.png)
 
-**注意**：目前可能仅支持 macOS/Linux，所以下面的使用方法也仅针对这两类系统。
+---
 
-## 开始使用
+## ✨ 为什么选择 Claude Code WebUI？
 
-在开始安装本项目之前，请先确保安装了 Bun 环境与 Claude Code, 如果已有，请忽略。
+Claude Code 很强大 —— 但它**受限于终端**。
 
-安装 Bun
+这意味着：
+- ❌ 无法在手机或 iPad 上使用
+- ❌ 难以远程访问
+- ❌ 不适合演示、监控或快速编辑
+
+**Claude Code WebUI 通过以下方式解决了这些问题：**
+
+- 🌍 在**你的浏览器中**运行 Claude Code
+- 📱 支持**手机和 iPad**
+- 🔁 重用你现有的 **`~/.claude/settings.json`**
+- 🧠 保持与本地 Claude Code **100% 兼容**
+
+如果 Claude Code 在你的机器上能正常运行 ——
+**它在这里也能正常运行。**
+
+---
+
+## 🚀 快速开始（10 秒）
+
+### 1. 前置条件
+
+确保你已经安装了 **Bun** 和 **Claude Code**。
+
 ```bash
+# 安装 Bun
 curl -fsSL https://bun.sh/install | bash
-```
 
-安装 Claude Code
-```bash
+# 安装 Claude Code
 npm install -g @anthropic-ai/claude-code
 ```
 
-运行 Claude Code WebUI
+---
+
+### 2. 运行 Claude Code WebUI
 
 ```bash
 bunx @devagentforge/claude-code-webui@latest
 ```
 
-如果你想自定义端口，可以设置环境变量
+打开你的浏览器：
 
-```bash
-PORT=3000 bunx @devagentforge/claude-code-webui@latest 
+```text
+http://localhost:10086
 ```
 
-从源码运行
+✅ 就这么简单。
+
+---
+
+### 更改端口（可选）
+
+```bash
+PORT=3000 bunx @devagentforge/claude-code-webui@latest
+```
+
+---
+
+## 🧠 核心功能
+
+### 🤖 浏览器中的 Claude Code
+
+* 与 Claude Code 的自然语言交互
+* **实时流式输出**（逐字显示）
+* Markdown + 语法高亮代码渲染
+* 简洁的 Claude 风格界面
+
+---
+
+### 📂 会话和工作区管理
+
+* 创建带有**自定义工作目录**的会话
+* 恢复之前的任何对话
+* 完整的本地会话历史（SQLite 支持）
+* 安全删除和自动持久化
+
+---
+
+### 🔐 工具权限控制
+
+* 明确批准工具执行
+* 每个工具的允许/拒绝
+* 批量权限策略
+* 手动处理 AskUserQuestion 流程
+
+---
+
+### 📱 移动优先的 UI
+
+* 完全响应式（桌面/手机/iPad）
+* Claude 风格浅色主题
+* 快速会话切换
+* 触屏友好交互
+
+---
+
+## 🔁 与本地 Claude Code 完全兼容
+
+Claude Code WebUI**没有重新发明配置**。
+
+它直接复用：
+
+```text
+~/.claude/settings.json
+```
+
+这意味着：
+
+* 相同的 API 密钥
+* 相同的基础 URL
+* 相同的模型
+* 相同的行为
+
+> 一次配置 Claude Code —— 随时随地使用。
+
+---
+
+## 🧩 架构概述
+
+### 前端
+
+* React 19 + TypeScript
+* Tailwind CSS 4
+* Radix UI
+* Zustand
+* Markdown + 语法高亮
+* 流式优先渲染
+
+### 后端
+
+* Bun 运行时
+* Hono Web 框架
+* 基于 WebSocket 的流式传输
+* SQLite（WAL 模式）
+* Claude Agent SDK
+
+---
+
+## 🛠 从源码运行
 
 ```bash
 git clone https://github.com/DevAgentForge/claude-code-webui.git
-cd claude-code-webui 
+cd claude-code-webui
 
-bun i 
-bun run build
-bun run start
-```
-
-**注意**
-
-本项目依赖文件 `~/.claude/settings.json`， 与 Claude Code 共享此配置，请自行配置Claude Code。
-
-## 核心功能
-
-### 🤖 AI 对话
-- 支持与 Claude Code AI 助手进行自然语言交互
-- 实时流式响应显示，逐字展示 AI 生成的内容
-- 支持 Markdown 渲染，包括代码高亮显示
-- 优雅的加载动画和骨架屏效果
-
-### 📂 会话管理
-- 创建新会话，选择工作目录
-- 查看历史会话记录
-- 继续之前的对话
-- 删除不需要的会话
-- 自动保存会话历史到本地数据库
-
-### 🔐 权限控制
-- 工具使用需要用户授权
-- 用户可以选择允许或拒绝特定工具的执行
-- 支持批量授权策略配置
-- AskUserQuestion 类型的权限请求需要用户手动响应
-
-### 🎨 现代化界面
-- 响应式设计，支持移动端和桌面端
-- 仿 Claude 官方界面的浅色主题
-- 侧边栏导航，快速切换会话
-- 支持自定义工作目录选择
-
-## 技术架构
-
-### 前端技术栈
-- **React 19** - UI 框架
-- **TypeScript** - 类型安全
-- **Tailwind CSS 4** - 原子化 CSS 样式
-- **Radix UI** - 无样式可访问性组件
-- **Zustand** - 轻量级状态管理
-- **React Markdown** - Markdown 渲染
-- **Highlight.js** - 代码语法高亮
-- **Bun** - 打包工具和开发服务器
-
-### 后端技术栈
-- **Bun** - JavaScript 运行时
-- **Hono** - 轻量级 Web 框架
-- **bun:sqlite** - SQLite 数据库驱动
-- **WebSocket** - 实时双向通信
-- **@anthropic-ai/claude-agent-sdk** - Claude SDK
-
-### 数据存储
-- **SQLite** - 使用 WAL 模式存储会话和消息
-- **本地文件系统** - 会话历史持久化
-
-## 开发模式
-
-### 环境要求
-- [Bun](https://bun.sh) v1.0+
-
-### 安装依赖
-
-```bash
 bun install
-```
-
-### 开发
-
-```bash
-bun run dev
-```
-
-
-### 生产构建
-
-```bash
 bun run build
 bun run start
 ```
 
-### 环境变量
+---
+
+## ⚙️ 环境变量
 
 ```bash
-# 服务器端口
 PORT=10086
-
-# 数据库路径
 DB_PATH=./webui.db
-
-# CORS 允许的来源（逗号分隔）
 CORS_ORIGIN=*
 ```
 
-### API 设置
+Claude 相关配置与 Claude Code 共享：
 
-项目通过 `src/claude-settings.ts` 加载相关配置， 与 Claude Code 共享一个配置文件，支持以下环境变量：
+* `ANTHROPIC_AUTH_TOKEN`
+* `ANTHROPIC_BASE_URL`
+* `ANTHROPIC_MODEL`
+* `ANTHROPIC_DEFAULT_SONNET_MODEL`
+* `ANTHROPIC_DEFAULT_OPUS_MODEL`
+* `ANTHROPIC_DEFAULT_HAIKU_MODEL`
+* `API_TIMEOUT_MS`
+* `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC`
 
-- `ANTHROPIC_AUTH_TOKEN` - Anthropic API 令牌
-- `ANTHROPIC_BASE_URL` - API 基础 URL
-- `ANTHROPIC_MODEL` - 默认模型
-- `ANTHROPIC_DEFAULT_SONNET_MODEL` - Sonnet 模型
-- `ANTHROPIC_DEFAULT_OPUS_MODEL` - Opus 模型
-- `ANTHROPIC_DEFAULT_HAIKU_MODEL` - Haiku 模型
-- `API_TIMEOUT_MS` - API 超时时间
-- `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` - 禁用非必要流量
+---
 
-## 贡献指南
+## 🗺 路线图
 
-1. Fork 本仓库
-2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
-3. 提交更改 (`git commit -m 'Add amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 创建 Pull Request
+计划中的功能：
 
-## 致谢
+* 🌐 基于 Web 的基础 URL 和 API Key 配置
+* 🐙 使用 **GitHub 仓库作为工作目录**
+* 🧠 部分替代 Claude Code Web
+* 👥 多会话和多代理改进
+* 🚧 更多功能即将推出
 
-- [Anthropic](https://www.anthropic.com) - Claude AI 模型
-- [Bun](https://bun.sh) - JavaScript 运行时
-- [React](https://react.dev) - UI 框架
-- [Tailwind CSS](https://tailwindcss.com) - CSS 框架
-- [Hono](https://hono.dev) - Web 框架
+---
+
+## 🤝 贡献
+
+欢迎提交 PR。
+
+1. Fork 这个仓库
+2. 创建你的功能分支
+3. 提交你的更改
+4. 打开 Pull Request
+
+---
+
+## ⭐ 最后说明
+
+如果你曾经想要：
+
+* 在手机上使用 Claude Code
+* 在 iPad 上使用 Claude Code
+* 无需终端使用 Claude Code
+
+这个项目就是为你准备的。
+
+👉 **如果对你有帮助，请给个 Star。**

@@ -1,169 +1,227 @@
+
+[简体中文](README_ZH.md) 
+
 # Claude Code WebUI
 
-A web-based version of Claude Code that allows you to deploy and use AI programming through a webUI on any device, compatible with local Claude Code configuration.
+**Claude Code — now in your browser. Anywhere.**
 
-![ScreenShot](./assets//ScreenShot_1.png)
+A **web-based Claude Code** that runs on **desktop, mobile phones, and iPads**,  
+while **sharing the exact same configuration as your local Claude Code**.
 
-## Introduction
+> No cloud rewrite.  
+> No vendor lock-in.  
+> Just Claude Code — everywhere.
 
-Claude Code WebUI enables users to interact with Claude Code through a browser.
-This project uses React for the frontend and Bun as the backend runtime, implementing complete conversation management, real-time message streaming, permission control, and more.
+![Screenshot](./assets/ScreenShot_1.png)
 
-**Note**: Currently, only macOS/Linux may be supported, so the usage instructions below are only for these two systems.
+---
 
-## Getting Started
+## ✨ Why Claude Code WebUI?
 
-Before installing this project, please ensure you have Bun and Claude Code installed. If you already have them, you can skip this step.
+Claude Code is powerful — but it’s **terminal-bound**.
 
-Install Bun:
+That means:
+- ❌ Not usable on mobile or iPad
+- ❌ Hard to access remotely
+- ❌ Awkward for demos, monitoring, or quick edits
+
+**Claude Code WebUI solves this by:**
+
+- 🌍 Running Claude Code **in your browser**
+- 📱 Supporting **mobile & iPad**
+- 🔁 Reusing your **existing `~/.claude/settings.json`**
+- 🧠 Staying **100% compatible** with local Claude Code
+
+If Claude Code works on your machine —  
+**it works here.**
+
+---
+
+## 🚀 Quick Start (10 seconds)
+
+### 1. Prerequisites
+
+Make sure you have **Bun** and **Claude Code** installed.
+
 ```bash
+# Install Bun
 curl -fsSL https://bun.sh/install | bash
-```
 
-Install Claude Code:
-```bash
+# Install Claude Code
 npm install -g @anthropic-ai/claude-code
-```
+````
 
-Run Claude Code WebUI:
+---
 
-```
+### 2. Run Claude Code WebUI
+
+```bash
 bunx @devagentforge/claude-code-webui@latest
 ```
 
-The default port is 10086, if you want to change it, just set the env.
+Open your browser:
 
-```bash
-PORT=3000 bunx @devagentforge/claude-code-webui@latest 
+```text
+http://localhost:10086
 ```
 
-Run from Source:
+✅ That’s it.
+
+---
+
+### Change Port (Optional)
+
+```bash
+PORT=3000 bunx @devagentforge/claude-code-webui@latest
+```
+
+---
+
+## 🧠 Core Capabilities
+
+### 🤖 Claude Code — in the Browser
+
+* Natural language interaction with Claude Code
+* **Real-time streaming output** (word-by-word)
+* Markdown + syntax-highlighted code rendering
+* Clean, Claude-style UI
+
+---
+
+### 📂 Session & Workspace Management
+
+* Create sessions with **custom working directories**
+* Resume any previous conversation
+* Full local session history (SQLite-backed)
+* Safe deletion & automatic persistence
+
+---
+
+### 🔐 Tool Permission Control
+
+* Explicit approval for tool execution
+* Allow / deny per tool
+* Bulk permission policies
+* Manual handling for AskUserQuestion flows
+
+---
+
+### 📱 Mobile-First UI
+
+* Fully responsive (desktop / phone / iPad)
+* Claude-style light theme
+* Fast session switching
+* Touch-friendly interactions
+
+---
+
+## 🔁 Fully Compatible with Local Claude Code
+
+Claude Code WebUI **does not reinvent configuration**.
+
+It directly reuses:
+
+```text
+~/.claude/settings.json
+```
+
+Which means:
+
+* Same API keys
+* Same base URL
+* Same models
+* Same behavior
+
+> Configure Claude Code once — use it everywhere.
+
+---
+
+## 🧩 Architecture Overview
+
+### Frontend
+
+* React 19 + TypeScript
+* Tailwind CSS 4
+* Radix UI
+* Zustand
+* Markdown + syntax highlighting
+* Streaming-first rendering
+
+### Backend
+
+* Bun runtime
+* Hono web framework
+* WebSocket-based streaming
+* SQLite (WAL mode)
+* Claude Agent SDK
+
+---
+
+## 🛠 Run from Source
 
 ```bash
 git clone https://github.com/DevAgentForge/claude-code-webui.git
 cd claude-code-webui
 
-bun i
-bun run build
-bun run start
-```
-
-**Note**
-
-This project depends on the file `~/.claude/settings.json`, which is shared with Claude Code. Please configure Claude Code yourself.
-
-## Core Features
-
-### 🤖 AI Conversation
-- Natural language interaction with Claude Code AI assistant
-- Real-time streaming response display, showing AI-generated content word by word
-- Markdown rendering support with code syntax highlighting
-- Elegant loading animations and skeleton screen effects
-
-### 📂 Session Management
-- Create new sessions with custom working directories
-- View historical session records
-- Continue previous conversations
-- Delete unwanted sessions
-- Automatically save session history to local database
-
-### 🔐 Permission Control
-- Tool usage requires user authorization
-- Users can choose to allow or deny execution of specific tools
-- Support for bulk authorization policy configuration
-- AskUserQuestion-type permission requests require manual user response
-
-### 🎨 Modern Interface
-- Responsive design for both mobile and desktop
-- Light theme mimicking Claude's official interface
-- Sidebar navigation for quick session switching
-- Custom working directory selection support
-
-## Technical Architecture
-
-### Frontend Tech Stack
-- **React 19** - UI Framework
-- **TypeScript** - Type Safety
-- **Tailwind CSS 4** - Atomic CSS Styling
-- **Radix UI** - Unstyled Accessible Components
-- **Zustand** - Lightweight State Management
-- **React Markdown** - Markdown Rendering
-- **Highlight.js** - Code Syntax Highlighting
-- **Bun** - Build Tool and Development Server
-
-### Backend Tech Stack
-- **Bun** - JavaScript Runtime
-- **Hono** - Lightweight Web Framework
-- **bun:sqlite** - SQLite Database Driver
-- **WebSocket** - Real-time Bidirectional Communication
-- **@anthropic-ai/claude-agent-sdk** - Claude SDK
-
-### Data Storage
-- **SQLite** - Using WAL mode to store sessions and messages
-- **Local File System** - Session History Persistence
-
-## Development Mode
-
-### Requirements
-- [Bun](https://bun.sh) v1.0+
-
-### Install Dependencies
-
-```bash
 bun install
-```
-
-### Development
-
-```bash
-bun run dev
-```
-
-### Production Build
-
-```bash
 bun run build
 bun run start
 ```
 
-### Environment Variables
+---
+
+## ⚙️ Environment Variables
 
 ```bash
-# Server Port
 PORT=10086
-
-# Database Path
 DB_PATH=./webui.db
-
-# CORS Allowed Origins (comma-separated)
 CORS_ORIGIN=*
 ```
 
-### API Configuration
+Claude-related config is shared with Claude Code:
 
-The project loads configuration through `src/claude-settings.ts`, sharing a configuration file with Claude Code. It supports the following environment variables:
+* `ANTHROPIC_AUTH_TOKEN`
+* `ANTHROPIC_BASE_URL`
+* `ANTHROPIC_MODEL`
+* `ANTHROPIC_DEFAULT_SONNET_MODEL`
+* `ANTHROPIC_DEFAULT_OPUS_MODEL`
+* `ANTHROPIC_DEFAULT_HAIKU_MODEL`
+* `API_TIMEOUT_MS`
+* `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC`
 
-- `ANTHROPIC_AUTH_TOKEN` - Anthropic API Token
-- `ANTHROPIC_BASE_URL` - API Base URL
-- `ANTHROPIC_MODEL` - Default Model
-- `ANTHROPIC_DEFAULT_SONNET_MODEL` - Sonnet Model
-- `ANTHROPIC_DEFAULT_OPUS_MODEL` - Opus Model
-- `ANTHROPIC_DEFAULT_HAIKU_MODEL` - Haiku Model
-- `API_TIMEOUT_MS` - API Timeout
-- `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` - Disable Non-essential Traffic
+---
 
-## Contributing
+## 🗺 Roadmap
+
+Planned features:
+
+* 🌐 Web-based configuration for Base URL & API Key
+* 🐙 Use **GitHub repositories as working directories**
+* 🧠 Partial replacement of Claude Code Web
+* 👥 Multi-session & multi-agent improvements
+* 🚧 More coming soon
+
+---
+
+## 🤝 Contributing
+
+PRs are welcome.
 
 1. Fork this repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Create a Pull Request
+2. Create your feature branch
+3. Commit your changes
+4. Open a Pull Request
 
-## Acknowledgments
+---
 
-- [Anthropic](https://www.anthropic.com) - Claude AI Model
-- [Bun](https://bun.sh) - JavaScript Runtime
-- [React](https://react.dev) - UI Framework
-- [Tailwind CSS](https://tailwindcss.com) - CSS Framework
-- [Hono](https://hono.dev) - Web Framework
+## ⭐ Final Note
+
+If you’ve ever wanted:
+
+* Claude Code on your phone
+* Claude Code on an iPad
+* Claude Code without a terminal
+
+This project is for you.
+
+👉 **Star it if it helps you.**
