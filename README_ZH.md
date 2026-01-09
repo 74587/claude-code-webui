@@ -136,7 +136,7 @@ CORS_ORIGIN=*
 
 ### API 设置
 
-项目通过 `src/claude-settings.ts` 加载 Claude 相关配置，支持以下环境变量：
+项目通过 `src/claude-settings.ts` 加载相关配置， 与 Claude Code 共享一个配置文件，支持以下环境变量：
 
 - `ANTHROPIC_AUTH_TOKEN` - Anthropic API 令牌
 - `ANTHROPIC_BASE_URL` - API 基础 URL
