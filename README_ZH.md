@@ -27,8 +27,14 @@ npm install -g @anthropic-ai/claude-code
 
 运行 Claude Code WebUI
 
-```
+```bash
 bunx @devagentforge/claude-code-webui@latest
+```
+
+如果你想自定义端口，可以设置环境变量
+
+```bash
+PORT=3000 bunx @devagentforge/claude-code-webui@latest 
 ```
 
 从源码运行

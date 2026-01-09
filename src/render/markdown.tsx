@@ -15,12 +15,12 @@ export default function MDContent({ text }: { text: string }) {
         p: (props) => <p className="mt-2 text-base leading-relaxed text-ink-700" {...props} />,
         ul: (props) => <ul className="mt-2 ml-4 grid list-disc gap-1" {...props} />,
         ol: (props) => <ol className="mt-2 ml-4 grid list-decimal gap-1" {...props} />,
-        li: (props) => <li className="text-ink-700" {...props} />,
+        li: (props) => <li className="min-w-0 text-ink-700" {...props} />,
         strong: (props) => <strong className="text-ink-900 font-semibold" {...props} />,
         em: (props) => <em className="text-ink-800" {...props} />,
         pre: (props) => (
           <pre
-            className="mt-3 overflow-x-auto whitespace-pre-wrap rounded-xl bg-surface-tertiary p-3 text-sm text-ink-700"
+            className="mt-3 max-w-full overflow-x-auto whitespace-pre-wrap rounded-xl bg-surface-tertiary p-3 text-sm text-ink-700"
             {...props}
           />
         ),

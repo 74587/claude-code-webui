@@ -222,8 +222,6 @@ pre code.hljs {
   --warning-900: 45 94.8% 15.1%
 }
 
-
-
 html,
 body,
 #root {
@@ -236,6 +234,22 @@ body {
   color: #1A1915;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+hr {
+  height: 1px;
+  margin: 1.5rem 0;
+  border: 0;
+  background-color: hsl(var(--border-100));
+  opacity: 0.2;
+}
+
+@media (max-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
 }
 
 code,

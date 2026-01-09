@@ -31,6 +31,12 @@ Run Claude Code WebUI:
 bunx @devagentforge/claude-code-webui@latest
 ```
 
+The default port is 10086, if you want to change it, just set the env.
+
+```bash
+PORT=3000 bunx @devagentforge/claude-code-webui@latest 
+```
+
 Run from Source:
 
 ```bash
