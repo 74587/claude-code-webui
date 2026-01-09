@@ -1,14 +1,25 @@
 {
-  "name": "claude-code-webui",
+  "name": "@devagentforge/claude-code-webui",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "main": "src/index.tsx",
   "module": "src/index.tsx",
+  "files": [
+    "bin",
+    "src",
+    "assets",
+    "dist",
+    "README.md",
+    "README_ZH.md"
+  ],
   "scripts": {
-    "dev": "bun --hot src/index.tsx",
-    "build": "bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*'",
-    "start": "NODE_ENV=production bun src/index.tsx"
+    "dev": "CLAUDE_CODE_WEBUI_USE_DIST=0 bun --hot src/index.tsx",
+    "build": "bun run scripts/build.ts",
+    "start": "NODE_ENV=production bun src/index.tsx",
+    "prepublishOnly": "bun run build"
+  },
+  "bin": {
+    "claude-code-webui": "bin/cli.js"
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.1.76",
@@ -35,5 +46,8 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.4.5"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

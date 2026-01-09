@@ -1,14 +1,43 @@
 import { serve } from "bun";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import index from "./index.html";
 import type { ClientEvent, ServerEvent } from "./types";
 import { runClaude, type RunnerHandle } from "./libs/runner";
 import { SessionStore } from "./libs/session-store";
 import "./claude-settings";
-import { join } from "path";
+import { dirname, extname, join, resolve, sep } from "path";
 import { networkInterfaces } from "os";
 import { generateSessionTitle } from "./libs/util";
+import { existsSync } from "fs";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const rootDir = resolve(__dirname, "..");
+const distDir = resolve(rootDir, "dist");
+const distIndex = resolve(distDir, "index.html");
+const useDist = process.env.CLAUDE_CODE_WEBUI_USE_DIST !== "0" && existsSync(distIndex);
+const distPrefix = distDir + sep;
+const devIndex = useDist ? null : (await import("./index.html")).default;
+const indexFile = useDist ? Bun.file(distIndex) : devIndex;
+const indexRoutes = {
+  "/": indexFile,
+  "/index.html": indexFile
+};
+const staticContentTypes: Record<string, string> = {
+  ".css": "text/css; charset=utf-8",
+  ".gif": "image/gif",
+  ".html": "text/html; charset=utf-8",
+  ".ico": "image/x-icon",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".js": "application/javascript; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".map": "application/json; charset=utf-8",
+  ".mjs": "application/javascript; charset=utf-8",
+  ".png": "image/png",
+  ".svg": "image/svg+xml",
+  ".webp": "image/webp"
+};
 
 const PORT = Number(process.env.PORT ?? 10086);
 const DB_PATH = process.env.DB_PATH ?? join(process.cwd(), "webui.db");
@@ -267,13 +296,33 @@ app.get("/api/sessions/title", async (c) => {
 const server = serve({
   port: PORT,
   hostname: "0.0.0.0",
-  routes: {
-    "/": index
-  },
-  fetch(req, server) {
+  routes: indexRoutes,
+  async fetch(req, server) {
     const url = new URL(req.url);
     if (url.pathname === "/ws" && server.upgrade(req)) {
       return;
+    }
+    if (url.pathname.startsWith("/api")) {
+      return app.fetch(req);
+    }
+    if (req.method === "GET") {
+      if (useDist) {
+        const filePath = resolve(distDir, "." + url.pathname);
+        if (filePath === distDir || filePath.startsWith(distPrefix)) {
+          const file = Bun.file(filePath);
+          if (await file.exists()) {
+            const contentType = staticContentTypes[extname(filePath)];
+            if (contentType) {
+              return new Response(file, {
+                headers: {
+                  "Content-Type": contentType
+                }
+              });
+            }
+            return file;
+          }
+        }
+      }
     }
     return app.fetch(req);
   },
