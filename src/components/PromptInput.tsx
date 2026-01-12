@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import type { ClientEvent } from "../types";
 import { useAppStore } from "../store/useAppStore";
 
@@ -27,7 +27,13 @@ export function usePromptActions(sendEvent: (event: ClientEvent) => void) {
       let title = "";
       try {
         setPendingStart(true);
-        const response = await fetch(`/api/sessions/title?userInput=${prompt}`);
+        const response = await fetch('/api/sessions/title', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userInput: prompt }),
+        });
         const data = await response.json();
         title = data.title;
       } catch (error) {
@@ -97,6 +103,12 @@ export function usePromptActions(sendEvent: (event: ClientEvent) => void) {
   };
 }
 
+// Maximum number of rows before scrolling is enabled
+const MAX_ROWS = 12;
+// Approximate line height in pixels (based on text-sm = 14px font with 1.5 line-height)
+const LINE_HEIGHT = 21;
+const MAX_HEIGHT = MAX_ROWS * LINE_HEIGHT; // ~252px
+
 export function PromptInput({ sendEvent }: PromptInputProps) {
   const { prompt, setPrompt, isRunning, handleSend, handleStop } = usePromptActions(sendEvent);
   const promptRef = useRef<HTMLTextAreaElement | null>(null);
@@ -114,13 +126,27 @@ export function PromptInput({ sendEvent }: PromptInputProps) {
   const handleInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
     const target = event.currentTarget;
     target.style.height = "auto";
-    target.style.height = `${target.scrollHeight}px`;
+    const scrollHeight = target.scrollHeight;
+    if (scrollHeight > MAX_HEIGHT) {
+      target.style.height = `${MAX_HEIGHT}px`;
+      target.style.overflowY = "auto";
+    } else {
+      target.style.height = `${scrollHeight}px`;
+      target.style.overflowY = "hidden";
+    }
   };
 
   useEffect(() => {
     if (!promptRef.current) return;
     promptRef.current.style.height = "auto";
-    promptRef.current.style.height = `${promptRef.current.scrollHeight}px`;
+    const scrollHeight = promptRef.current.scrollHeight;
+    if (scrollHeight > MAX_HEIGHT) {
+      promptRef.current.style.height = `${MAX_HEIGHT}px`;
+      promptRef.current.style.overflowY = "auto";
+    } else {
+      promptRef.current.style.height = `${scrollHeight}px`;
+      promptRef.current.style.overflowY = "hidden";
+    }
   }, [prompt]);
 
   return (

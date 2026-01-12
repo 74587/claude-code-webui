@@ -287,8 +287,9 @@ app.get("/api/sessions/recent-cwd", async (c) => {
   return c.json({ cwds });
 })
 
-app.get("/api/sessions/title", async (c) => {
-  const userInput = c.req.query("userInput") || null;
+app.post("/api/sessions/title", async (c) => {
+  const body = await c.req.json();
+  const userInput = body.userInput || null;
   const title = await generateSessionTitle(userInput);
   return c.json({ title });
 })
